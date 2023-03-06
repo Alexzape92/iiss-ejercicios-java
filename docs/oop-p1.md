@@ -53,8 +53,9 @@ b) En el caso de que haya algún problema en la implementación anterior, propon
 
     Este es el código generado:
 
+[ElementsSet.java](src/ElementsSet.java)
 ```java
-public class ej1<E>{
+public class ElementsSet<E>{
     private HashSet<E> set = new HashSet<E>();
     private int numberOfAddedElements = 0;
 
@@ -168,7 +169,7 @@ a) ¿Es correcto el uso de herencia en la implementación de las clases `Cat` y 
 
 b) En el caso de que el uso de la herencia no sea correcto, proponga una solución alternativa. ¿Cuáles son los beneficios de la solución propuesta frente a la original.
 
-#### `Animal.java`
+[Animal.java](src/Animal.java)
 ```java
 public interface Animal {
     public String speak();
@@ -177,7 +178,7 @@ public interface Animal {
 }
 ```
 
-#### `Cat.java`
+[Cat.java](src/Cat.java)
 ```java
 
 public class Cat implements Animal{
@@ -200,7 +201,7 @@ public class Cat implements Animal{
 }
 ```
 
-#### `Dog.java`
+[Dog.java](src/Dog.java)
 ```java
 
 public class Dog implements Animal{
@@ -223,7 +224,7 @@ public class Dog implements Animal{
 }
 ```
 
-#### `Main.java`
+[Main.java](src/Main.java)
 ```java
 
 public class Main {

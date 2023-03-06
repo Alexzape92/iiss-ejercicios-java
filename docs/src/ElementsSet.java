@@ -3,7 +3,7 @@ import java.util.*;
 import java.util.HashSet;
 
 
-public class ej1<E>{
+public class ElementsSet<E>{
     private HashSet<E> set = new HashSet<E>();
     private int numberOfAddedElements = 0;
 
@@ -22,7 +22,7 @@ public class ej1<E>{
     }
 
     public static void main(String[] args) {
-        ej1<String> set = new ej1<String>();
+        ElementsSet<String> set = new ElementsSet<String>();
         set.addAll(Arrays.asList("One", "Two", "Three"));
         System.out.println(set.getNumberOfAddedElements());
     }
