@@ -217,7 +217,58 @@ En la siguiente lista se incluyen 10 posibles problemas que pueden encontrarse e
 
 a) ¿Existe algún tipo de problema en la implementación anterior de los que se incluye en la lista anterior? ¿Es necesario aplicar refactoring en este caso? En el caso de que existan problemas, indique cuáles son y qué tipos de problemas piensa que generarían en el futuro si no se aplica el refactoring ahora.
 
+    Sí, existen varios problemas en la implementación anterior. Por ejemplo, la función getUsers() tiene demasiada responsabilidad, ya que no sólo obtiene los usuarios, sino que también los ordena y capitaliza. Además, la función es demasiado larga, lo que dificulta su lectura y mantenimiento. Por otro lado, el código es poco legible, ya que se encadenan muchos métodos, teniendo que recurrir a comentarios para explicar su funcionamiento. Se debería aplicar refactoring para mejorar la legibilidad del código y separar las responsabilidades de las funciones. Si no se hace, el código se volverá más difícil de mantener, debido a su baja cohesión y a la dificultad de encontrar los errores.
+
 b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+
+    Esta sería la implementación mejorada:
+
+```java
+    public List<String> getUsers() {
+        List<String> users = new ArrayList<String>();
+        
+        //Sorting users by points
+        usersWithPoints.entrySet()
+        .stream()
+        .forEach(x -> users.add(x.getKey()));
+       
+        return users;
+    }
+    public List<String> getUsersSortedByPoints() {
+        List<String> users = new ArrayList<String>();
+        
+        //Sorting users by points
+        usersWithPoints.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users.add(x.getKey()));
+        
+        return users;
+      }
+    
+    public List<String> getUsersCapitalized() {
+        List<String> users = new ArrayList<String>();
+        
+        //Capitalizing the names of the users
+        usersWithPoints.entrySet()
+        .stream()
+        .forEach(x -> users.add(x.getKey().toUpperCase()));
+        
+        return users;
+    }
+
+    public List<String> getUsersSortedByPointsAndCapitalized() {
+        List<String> users = getUsersSortedByPoints();
+        
+        //Sorting users by points
+        List<String> finalUsers = new ArrayList<String>();
+        users.forEach(x -> finalUsers.add(x.toUpperCase()));
+        
+        return users;
+    }
+```
+
+    En este caso tenemos 3 funciones con responsabilidades separadas, que realizan una única tarea, lo que facilita su lectura y mantenimiento. Además, el código es más legible, ya que no se encadenan tantos métodos. Se ha reducido todo lo posible el código duplicado.
 
 ### Ejercicio 2
 
@@ -310,7 +361,58 @@ Responda a las siguientes cuestiones, teniendo en cuenta la lista de los 10 posi
 
 a) El software del ejercicio anterior ha evolucionado añadiendo nueva funcionalidad en su implementación. ¿Existe algún tipo de problema en esta versión de la implementación de los que se incluyen en la lista? ¿Es necesario aplicar refactoring en este caso? En el caso de que existan problemas, indique cuáles son y qué tipos de problemas piensa que generarían en el futuro si no se aplica el refactoring ahora.
 
+    Sí, existen varios problemas en esta versión de la implementación. En primer lugar, la función getUsers() tiene demasiadas responsabilidades, ya que realiza 3 tareas diferentes: ordena los usuarios por puntos, capitaliza los nombres de los usuarios y añade los usuarios a la lista final. Además, el código está duplicado, ya que se realiza el mismo proceso para cada grupo de usuarios, de manera que si agregásemos otro grupo de usuarios habría que modificar el código.
+
 b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+    
+    Esta sería la implementación mejorada:
+
+```java
+    private List<String> orderUsersByPoints(Map<String, Integer> usersWithPoints) {
+        List<String> users = new ArrayList<String>();
+        
+        //Sorting users by points
+        usersWithPoints.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users.add(x.getKey()));
+        
+        return users;
+    }
+
+    private List<String> capitalizeUsers(List<String> users) {
+        List<String> usersCapitalized = new ArrayList<String>();
+        
+        users.forEach(x -> usersCapitalized.add(x.toUpperCase()));
+        
+        return usersCapitalized;
+    }
+
+    public List<ArrayList<String>> getUsers() {
+        List<ArrayList<String>> users = new ArrayList<ArrayList<String>>();
+        
+        //Sorting users by points
+        List<String> users1 = orderUsersByPoints(usersWithPoints_Group1);
+        
+        List<String> users2 = orderUsersByPoints(usersWithPoints_Group2);
+
+        List<String> users3 = orderUsersByPoints(usersWithPoints_Group3);
+        
+        //Capitalizing the names of the users
+        users1 = capitalizeUsers(users1);
+        users2 = capitalizeUsers(users2);
+        users3 = capitalizeUsers(users3);
+        
+        //Adding users to the main list
+        users.add((ArrayList<String>)users1);
+        users.add((ArrayList<String>)users2);
+        users.add((ArrayList<String>)users3);
+        
+        return users;
+    }
+```
+
+    Hemos creado dos funciones privadas auxiliares que realizan las tareas de ordenar los usuarios por puntos y capitalizar los nombres de los usuarios. De esta manera, la función getUsers() se encarga de llamar a estas funciones y de añadir los usuarios a la lista final, eliminando el código duplicado. También se podría proceder como en el ejercicio anterior y crear diferentes funciones para separar las responsabilidades.
 
 ## Referencias
 
