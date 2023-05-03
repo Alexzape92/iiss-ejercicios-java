@@ -105,7 +105,6 @@ public class Main {
         Se realizan dos inyecciones de dependencias, una en el constructor y otra de propiedad en el setter `setDBAccess`. Estas inyecciones se realizan, respectivamente, en las líneas: 
         * DBClient client = new DBClient(dbAccessB);
         * client.setDBAccess(dbAccessA);
-`
 
 
 ### Ejercicio 2
