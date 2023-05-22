@@ -236,6 +236,27 @@ b) Mostrar el mensaje "The database is empty" después de la ejecución de la op
 
 3. Finalmente, sustituir el fichero `LoginAspect.java` por el fichero `LoginAspect.aj` incluyendo la misma funcionalidad pero utilizando la sintaxis de AspectJ.
 
+    El aspecto resultante es el siguiente:
+
+```java
+package es.uca.iiss.aspectj;
+
+public aspect LoginAspect{
+	pointcut loginRequired() : call(* Bank.makeTransaction()) || call(* Bank.takeMoneyOut());
+	pointcut emptyDatabase() : call(* Bank.showUsers());
+	
+	before(): loginRequired() {
+		System.out.println("Login required.");
+	}
+	
+	after(): emptyDatabase() {
+		System.out.println("Database is empty.");
+	}
+}
+```
+
+    Cabe destacar que se ha añadido la línea 1 para especificar que el aspecto está dentro del paquete, en caso contrario no funcionaría. Al ejecutarlo, se comprueba que el aspecto imprime los mensajes correctamente.
+
 
 ## Referencias
 
