@@ -245,6 +245,120 @@ b) En la clase `ShoppingCart.java`:
 
 Dado el código del primer ejercicio, ¿existe algún uso indebido del valor `null`?. En caso afirmativo, reemplazar su uso por el de la clase `Optional` en los casos en los que sea necesario.
 
+	Ambos ejercicios se han resuelto en los ficheros siguientes:
+
+[Product.java](src/Product.java)
+```java
+import java.util.Optional;
+
+public class Product {
+	
+	private int code;
+	private String name;
+	private String category;
+	private double weight;
+	private double height;
+	
+	public Product(int code, String name, String category, double weight, double height) {
+		assert code >= 0 : "Code must be positive";
+		this.code = code;
+		
+        Optional<String> optName = Optional.ofNullable(name);
+        Optional<String> optCategory = Optional.ofNullable(category);
+        assert optName.isPresent() : "Name must be present";
+        this.name = optName.get();
+        assert optCategory.isPresent() : "Category must be present";
+        this.category = optCategory.get();
+		
+        assert weight >= 0 : "Weight must be positive";
+		this.weight = weight;
+
+        assert height >= 0 : "Height must be positive";
+		this.height = height;
+	}
+	
+	public int getCode() {
+		return code;
+	}
+	
+	public void setName(String name) {
+        Optional<String> optName = Optional.ofNullable(name);
+        assert optName.isPresent() : "Name must be present";
+		this.name = optName.get();
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setCategory(String category) {
+        Optional<String> optCategory = Optional.ofNullable(category);
+        assert optCategory.isPresent() : "Category must be present";
+		this.category = optCategory.get();
+	}
+	
+	public String getCategory() {
+		return this.category;
+	}
+	
+	public void setWeight(double weight) {
+        assert weight >= 0 : "Weight must be positive";
+		this.weight = weight;
+	}
+	
+	public double getWeight() {
+		return this.weight;
+	}
+	
+	public void setHeight(double height) {
+        assert height >= 0 : "Height must be positive";
+		this.height = height;
+	}
+	
+	public double getHeight() {
+		return this.height;
+	}
+}
+```
+
+[ShoppingCart.java](src/ShoppingCart.java)
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ShoppingCart {
+	
+	Map<Product, Integer> shoppingCart;
+	
+	public ShoppingCart() {
+		shoppingCart = new HashMap<Product, Integer>();
+	}
+	
+	public void addProduct(Product product, int number) {
+		assert number > 0 : "Number must be greater than 0";
+		if(shoppingCart.keySet().stream().filter(element -> element.getCode() == product.getCode()).count() == 0) {
+			shoppingCart.put(product, number);
+		}
+	}
+	
+	public Product removeProduct(Product product) {
+        assert shoppingCart.containsKey(product) : "Product must be in the shopping cart";
+
+		shoppingCart.remove(product);
+		return product;
+	}
+	
+	public void printShoppingCartContent() {
+		System.out.println("The shopping cart content is: ");
+		
+		for(Product product: shoppingCart.keySet()) {
+			System.out.println(product.getCode() + " - " + product.getName() + " : " + shoppingCart.get(product));
+		}
+		
+	}
+}
+```
+
 ## Referencias
 
 [API Java]: https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html
